@@ -2,11 +2,19 @@ from unittest import case
 
 import requests
 
+def datavask(t:str):
+    return t.replace('\n\n', ' ')
+
 def tæl_ord(t:str):
-    return t.count(' ')
+    return t.count(' ') + 1
 
 def tæl_sætninger(t:str):
-    return t.count('.')
+    count = 0
+    count += t.count('.')
+    count += t.count('!')
+    count += t.count('?')
+    count += t.count(':')
+    return count
 
 def tæl_lange_ord(t:str):
     words = t.split(' ')
@@ -37,7 +45,7 @@ req = requests.get('https://lorem.place/api/generate?format=text&paragraphs=50&w
 raw = req.json()
 
 # Læs rå tekst
-text = raw['data']['text']
+text = datavask(raw['data']['text'])
 
 antal_ord = tæl_ord(text)
 antal_sætninger = tæl_sætninger(text)
