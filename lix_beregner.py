@@ -1,5 +1,3 @@
-from unittest import case
-
 import requests
 
 def datavask(t:str):
@@ -37,7 +35,6 @@ def bestem_sværhedsgrad(index:int):
         case x if x >= 55:
             return 'Meget svær'
 
-
 # Hent data
 req = requests.get('https://lorem.place/api/generate?format=text&paragraphs=50&words=100&random=true&start=false')
 
@@ -47,13 +44,15 @@ raw = req.json()
 # Læs rå tekst
 text = datavask(raw['data']['text'])
 
+#Beregninger
 antal_ord = tæl_ord(text)
 antal_sætninger = tæl_sætninger(text)
 antal_lange_ord = tæl_lange_ord(text)
+lix = (antal_ord / antal_sætninger) + ((antal_lange_ord * 100) / antal_ord)
 
+# Udskriv
 print(f'Ord: {antal_ord}\t\t(faktisk: {raw['meta']['totalWords']})')
 print(f'Sætninger: {antal_sætninger}\t(faktisk: {raw['meta']['paragraphs']})')
 print(f'Lange ord: {antal_lange_ord}')
-
-lix = (antal_ord / antal_sætninger) + ((antal_lange_ord * 100) / antal_ord)
 print(f'LIX-tal: {round(lix)}\t({bestem_sværhedsgrad(lix)})')
+print(text)
